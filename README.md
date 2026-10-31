@@ -1,6 +1,6 @@
 [![Tests](https://github.com/nosnoc/advanced-minmpc/actions/workflows/tests.yml/badge.svg)](https://github.com/nosnoc/advanced-minmpc/actions/workflows/tests.yml)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![CasADi](https://img.shields.io/badge/CasADi-3.6.7%2B-009999)](https://web.casadi.org/)
+[![CasADi](https://img.shields.io/badge/CasADi-3.8.0%2B-009999)](https://web.casadi.org/)
 [![Paper](https://img.shields.io/badge/arXiv-pending-b31b1b)](#citation)
 
 # Advanced-step nonlinear mixed-integer MPC
@@ -11,7 +11,12 @@
 
 The method combines nonlinear optimization with discrete control reconstruction. Horizon-tail relaxations significantly reduce the combinatorial search while preserving an integer-feasible first control input. In the paper's numerical experiments, the resulting closed-loop performance typically differs only slightly or negligibly from optimization with integrality enforced over the full horizon.
 
-## Algorithm
+## Algorithms
+
+`AdvancedStepMPC` implements AS-MINMPC in two phases:
+
+1. **Preparation:** before the next measurement arrives, solve the relaxed NLP at a predicted state and prepare derivatives and the quadratic model.
+2. **Feedback:** update the initial state with the measurement and solve the reconstruction MIP. An MIQP selects discrete controls and performs one sequential quadratic programming (SQP) step; a MILP can be followed by a fixed-integer QP. Nonlinear polishing is optional and disabled by default.
 
 `ThreePhaseSolver` implements the three-phase decomposition:
 
@@ -19,10 +24,6 @@ The method combines nonlinear optimization with discrete control reconstruction.
 2. **Integer reconstruction:** recover discrete controls through a mixed-integer quadratic program (MIQP), a mixed-integer linear program (MILP), or [PyCombina](https://github.com/adbuerger/pycombina). PyCombina can also provide a starting trajectory for the MIP.
 3. **Nonlinear polishing:** solve an NLP with the reconstructed binary decisions fixed. With a feasibility-relaxed tail, only the integer prefix is fixed and the tail remains continuous.
 
-`AdvancedStepMPC` implements AS-MINMPC in two phases:
-
-1. **Preparation:** before the next measurement arrives, solve the relaxed NLP at a predicted state and prepare derivatives and the quadratic model.
-2. **Feedback:** update the initial state with the measurement and solve the reconstruction MIP. An MIQP selects discrete controls and performs one sequential quadratic programming (SQP) step; a MILP can be followed by a fixed-integer QP. Nonlinear polishing is optional and disabled by default.
 
 ### Horizon-tail relaxations
 
@@ -31,7 +32,7 @@ MPC applies only the first control input. The algorithm therefore retains the fu
 - **Optimality relaxation (`M_o`):** optimize binary controls over the first `M_o` intervals and fix the tail to a binary trajectory supplied by PyCombina. The entire control sequence remains integer feasible.
 - **Feasibility relaxation (`M_f`):** enforce integrality over the first `M_f` intervals and allow controls in the tail to vary continuously in `[0, 1]`. For `M_f >= 1`, the applied first input remains integer feasible, although the predicted tail may be fractional.
 
-[![Full MIQP, feasibility relaxation with M_f = 8, and optimality relaxation with M_o = 3](src/horizon_relaxation_single_columns.png)](src/horizon_relaxation_single_columns.pdf)
+[![Full MIQP, feasibility relaxation with M_f = 8, and optimality relaxation with M_o = 3](docs/figures/horizon_relaxation_single_columns.png)](docs/figures/horizon_relaxation_single_columns.pdf)
 
 *Horizon-tail approximations from the paper's parallel-chiller example. Shading marks the relaxed or fixed tail.*
 
@@ -88,6 +89,8 @@ python examples/lotka_volterra/lotka_volterra_mpc.py
 Both examples use DAQP for MIQP reconstruction. The optional MILP comparisons use HiGHS through CasADi.
 
 The [example library](examples/) also includes [parallel chillers](examples/parallel_chillers/), [fuel-efficient driving](examples/fuel_efficient_driving/), a [steerable needle](examples/steerable_needle/), [double-tank](examples/double_tank/), and [three-tank multimode](examples/three_tank_multimode/) systems, with optimal control, MPC, and benchmark scripts.
+
+The vehicle, chiller, and needle OCP/MPC drivers display results without saving files by default. Set `SAVE_RESULTS = True` in a driver to save trajectories, summaries, and figures.
 
 ## Options
 
@@ -175,6 +178,10 @@ If you use this package in research, please cite the accompanying paper. The arX
   archivePrefix = {arXiv}
 }
 ```
+
+## License
+
+Original code is licensed under [BSD-2-Clause](LICENSE). Bundled PyCombina and the CAMINO-derived example files retain their own licenses.
 
 ## Contact
 

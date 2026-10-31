@@ -1,0 +1,2 @@
+include LICENSE.md COPYING ThirdPartyNotices.txt MODIFICATIONS.md README_WINDOWS.md
+recursive-include src/combina_bnb_solver *.cpp *.hpp

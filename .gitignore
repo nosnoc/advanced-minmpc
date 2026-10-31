@@ -218,3 +218,18 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local native build artifacts and editor backups
+*.pyd
+*.dll
+*.o
+*.obj
+*.a
+*.lib
+*.bak
+
+# Generated example output; retain source data and documentation figures
+/examples/**/results/
+/examples/**/benchmarks/figures/
+/examples/**/benchmarks/tables/
+/examples/**/benchmarks/smoke/
