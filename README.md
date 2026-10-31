@@ -18,7 +18,7 @@ The method combines nonlinear optimization with discrete control reconstruction.
 1. **Preparation:** before the next measurement arrives, solve the relaxed NLP at a predicted state and prepare derivatives and the quadratic model.
 2. **Feedback:** update the initial state with the measurement and solve the reconstruction MIP. An MIQP selects discrete controls and performs one sequential quadratic programming (SQP) step; a MILP can be followed by a fixed-integer QP. Nonlinear polishing is optional and disabled by default.
 
-`ThreePhaseSolver` implements the three-phase decomposition:
+`ThreePhaseSolver` implements the three-phase decomposition described by [Sager (2009)](https://doi.org/10.1016/j.jprocont.2009.03.008) and [Bürger et al. (2023)](https://doi.org/10.1016/j.automatica.2023.110967):
 
 1. **Continuous relaxation:** solve the NLP with binary controls relaxed to `[0, 1]` using [IPOPT](https://coin-or.github.io/Ipopt/).
 2. **Integer reconstruction:** recover discrete controls through a mixed-integer quadratic program (MIQP), a mixed-integer linear program (MILP), or [PyCombina](https://github.com/adbuerger/pycombina). PyCombina can also provide a starting trajectory for the MIP.
