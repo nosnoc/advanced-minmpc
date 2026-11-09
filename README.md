@@ -1,13 +1,13 @@
 [![Tests](https://github.com/nosnoc/advanced-minmpc/actions/workflows/tests.yml/badge.svg)](https://github.com/nosnoc/advanced-minmpc/actions/workflows/tests.yml)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![CasADi](https://img.shields.io/badge/CasADi-3.8.0%2B-009999)](https://web.casadi.org/)
-[![Paper](https://img.shields.io/badge/arXiv-pending-b31b1b)](#citation)
+[![Paper](https://img.shields.io/badge/arXiv-2611.09187-b31b1b)](https://arxiv.org/abs/2611.09187)
 
 # Advanced-step nonlinear mixed-integer MPC
 
 `advanced-minmpc` implements the advanced-step nonlinear mixed-integer model predictive control algorithms introduced in:
 
-> Armin Nurkanović. **Real-Time Nonlinear Mixed-Integer Model Predictive Control With Horizon-Tail Relaxations.** [arXiv preprint](https://arxiv.org/abs/XXXX.XXXXX) (placeholder; identifier to be updated).
+> Armin Nurkanović. **Real-Time Nonlinear Mixed-Integer Model Predictive Control With Horizon-Tail Relaxations.** [arXiv:2611.09187](https://arxiv.org/abs/2611.09187) ([PDF](https://arxiv.org/pdf/2611.09187)).
 
 The method combines nonlinear optimization with discrete control reconstruction. Horizon-tail relaxations significantly reduce the combinatorial search while preserving an integer-feasible first control input. In the paper's numerical experiments, the resulting closed-loop performance typically differs only slightly or negligibly from optimization with integrality enforced over the full horizon.
 
@@ -167,14 +167,14 @@ python -m unittest discover -s tests -v
 
 ## Citation
 
-If you use this package in research, please cite the accompanying paper. The arXiv identifier below is a placeholder and will be updated after upload.
+If you use this package in research, please cite the accompanying paper.
 
 ```bibtex
-@article{Nurkanovic2026AdvancedMINMPC,
+@article{Nurkanovic2026c,
   title         = {Real-Time Nonlinear Mixed-Integer Model Predictive Control With Horizon-Tail Relaxations},
   author        = {Nurkanovi{\'c}, Armin},
   year          = {2026},
-  eprint        = {XXXX.XXXXX},
+  eprint        = {2611.09187},
   archivePrefix = {arXiv}
 }
 ```
